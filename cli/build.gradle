@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':imap-util-core')
+    compile project(':imap-utils-core')
 }
 
 task copyJars(type: Copy) {
