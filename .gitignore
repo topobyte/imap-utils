@@ -1,3 +1,4 @@
 *.swp
 .gradle
+cli/src/main/resources/config
 core/src/test/resources/config

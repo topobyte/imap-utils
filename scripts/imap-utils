@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DIR=$(dirname $0)
+CMD="$DIR/imap-utils.sh"
+CLASS="de.topobyte.imaputils.executables.ImapUtils"
+
+exec "$CMD" "$CLASS" "$@"
