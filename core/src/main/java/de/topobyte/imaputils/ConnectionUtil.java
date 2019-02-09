@@ -15,49 +15,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with imap-utils. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.imaputils.config;
+package de.topobyte.imaputils;
 
-public class Config
+import java.util.Properties;
+
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Store;
+
+import de.topobyte.imaputils.config.Config;
+
+public class ConnectionUtil
 {
 
-	private String host;
-	private String username;
-	private String password;
-
-	public Config(String host, String username)
+	public static Store connect(Config config) throws MessagingException
 	{
-		this.host = host;
-		this.username = username;
+		return connect(config.getHost(), config.getUsername(),
+				config.getPassword());
 	}
 
-	public String getHost()
+	public static Store connect(String hostname, String user, String pw)
+			throws MessagingException
 	{
-		return host;
-	}
+		Properties props = System.getProperties();
+		props.setProperty("mail.store.protocol", "imaps");
 
-	public void setHost(String host)
-	{
-		this.host = host;
-	}
+		Session session = Session.getDefaultInstance(props, null);
+		Store store = session.getStore("imaps");
+		store.connect(hostname, user, pw);
 
-	public String getUsername()
-	{
-		return username;
-	}
-
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
-
-	public String getPassword()
-	{
-		return password;
-	}
-
-	public void setPassword(String password)
-	{
-		this.password = password;
+		return store;
 	}
 
 }

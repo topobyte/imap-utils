@@ -19,15 +19,11 @@ package de.topobyte.imaputils.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Splitter;
+import de.topobyte.imaputils.Password;
 
 public class ConfigUtil
 {
@@ -49,26 +45,26 @@ public class ConfigUtil
 			return null;
 		}
 
-		List<String> lines = IOUtils.readLines(input);
-		input.close();
+		return Config.read(input);
+	}
 
-		Map<String, String> map = new HashMap<>();
-
-		Splitter colonSplitter = Splitter.on(":").limit(2);
-		for (String line : lines) {
-			List<String> parts = colonSplitter.splitToList(line);
-			if (parts.size() != 2) {
-				continue;
-			}
-			String key = parts.get(0);
-			String value = parts.get(1);
-			map.put(key, value);
+	public static Config obtainConfig()
+	{
+		Config config = null;
+		try {
+			config = read();
+		} catch (IOException e) {
+			// ignore
 		}
-
-		String host = map.get("host");
-		String username = map.get("user");
-
-		return new Config(host, username);
+		if (config == null) {
+			return null;
+		}
+		Password.Result result = Password.get();
+		if (!result.isValid()) {
+			return null;
+		}
+		config.setPassword(new String(result.getPassword()));
+		return config;
 	}
 
 }

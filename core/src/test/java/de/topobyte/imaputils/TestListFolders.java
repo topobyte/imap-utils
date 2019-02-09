@@ -30,20 +30,16 @@ public class TestListFolders
 
 	public static void main(String[] args) throws IOException
 	{
-		Config config = ConfigUtil.read();
+		Config config = ConfigUtil.obtainConfig();
 		if (config == null) {
-			return;
+			System.exit(1);
 		}
 
-		Password.Result result = Password.get();
-		if (result.isValid()) {
-			config.setPassword(new String(result.getPassword()));
-			try {
-				run(config);
-			} catch (IOException | MessagingException e) {
-				System.out.println("Connection failed: " + e.getMessage());
-				System.exit(1);
-			}
+		try {
+			run(config);
+		} catch (IOException | MessagingException e) {
+			System.out.println("Connection failed: " + e.getMessage());
+			System.exit(1);
 		}
 
 		System.exit(0);
@@ -52,7 +48,7 @@ public class TestListFolders
 	private static void run(Config config)
 			throws MessagingException, IOException
 	{
-		try (Store store = TestUtil.connect(config.getHost(),
+		try (Store store = ConnectionUtil.connect(config.getHost(),
 				config.getUsername(), config.getPassword())) {
 			FolderLister tool = new FolderLister(store);
 			tool.execute();
