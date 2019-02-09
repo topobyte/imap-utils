@@ -21,3 +21,18 @@ Example configuration file:
 
     host=your.host.name.com
     user=your.user
+
+# CLI
+
+Run the command line interface like this:
+
+    ./scripts/imap-utils <command>
+
+where <command> may be one of the following:
+
+    list-folders
+    list-list-ids
+
+* `list-folders` will list the folder tree of your mailbox.
+* `list-list-ids` scans all mails in the INBOX folder, looks for the
+  List-Id header field, and will print a histogram of the values found.
