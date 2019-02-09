@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>imap-utils core</name>
+  <description>Utilities for accessing and processing IMAP mails</description>
+  <url>https://github.com/topobyte/imap-utils</url>
+</project>
