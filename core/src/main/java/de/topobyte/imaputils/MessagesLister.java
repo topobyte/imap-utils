@@ -68,9 +68,14 @@ public class MessagesLister
 			}
 			System.out.println("Date: " + msg.getReceivedDate());
 			System.out.println("Size: " + msg.getSize());
-			System.out.println(msg.getFlags());
-			System.out.println("Body: \n" + msg.getContent());
-			System.out.println(msg.getContentType());
+			System.out.println("Flags: " + msg.getFlags());
+			System.out.println("Content type: " + msg.getContentType());
+			try {
+				System.out.println("Body: \n" + msg.getContent());
+			} catch (MessagingException | IOException e) {
+				System.out.println(
+						"Unable to get body content(): " + e.getMessage());
+			}
 		}
 	}
 
