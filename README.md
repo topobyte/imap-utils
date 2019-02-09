@@ -13,6 +13,7 @@ Run `./gradlew clean create` to make the scripts work.
 
 To configure the IMAP account the command line tools work with, add a
 configuration file at location `cli/src/main/resources/config`.
+Rerun `./gradlew clean create` afterwards.
 
 In order to be able to run the tests on an IMAP account, add a configuration
 file at location `core/src/test/resources/config`.
