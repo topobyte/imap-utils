@@ -4,6 +4,9 @@ if (project.hasProperty("topobyte")) {
 }
 
 dependencies {
+    compile 'de.topobyte:adt-tree:0.0.11'
+    compile 'de.topobyte:adt-tree-printing-stdio:0.0.11'
+    compile 'de.topobyte:guava-utils:0.0.1'
     compile 'com.sun.mail:javax.mail:1.6.0'
     compile 'com.google.guava:guava:19.0'
     compile 'commons-io:commons-io:2.4'

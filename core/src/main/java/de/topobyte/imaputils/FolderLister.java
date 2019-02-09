@@ -23,10 +23,17 @@ import javax.mail.Store;
 
 import com.google.common.base.Strings;
 
+import de.topobyte.adt.tree.TreeUtil;
+import de.topobyte.adt.tree.Visitor;
+import de.topobyte.adt.tree.visitors.stdio.StdPrintVisitor;
+import de.topobyte.adt.trees.general.sorted.Node;
+import de.topobyte.adt.trees.general.sorted.SortedTree;
+
 public class FolderLister
 {
 
 	private Store store;
+	private SortedTree<String> tree = new SortedTree<>();
 
 	public FolderLister(Store store)
 	{
@@ -36,17 +43,30 @@ public class FolderLister
 	public void execute() throws MessagingException
 	{
 		Folder mainFolder = store.getDefaultFolder();
-		list(mainFolder, 0);
+		Node<String> node = tree.getRoot();
+		list(mainFolder, 0, node);
+
+		Visitor<String> visitor = new StdPrintVisitor<>(false);
+		System.out.println("TREE:");
+		TreeUtil.traversePreorder(tree, visitor);
 	}
 
-	private void list(Folder folder, int depth) throws MessagingException
+	private void list(Folder folder, int depth, Node<String> node)
+			throws MessagingException
 	{
 		Folder[] folders = folder.list();
 		for (Folder child : folders) {
+			String folderName = child.getName();
 			System.out.println(String.format("%s%s", Strings.repeat(" ", depth),
-					child.getName()));
-			list(child, depth + 1);
+					folderName));
+			Node<String> childNode = node.add(folderName);
+			list(child, depth + 1, childNode);
 		}
+	}
+
+	public SortedTree<String> getTree()
+	{
+		return tree;
 	}
 
 }

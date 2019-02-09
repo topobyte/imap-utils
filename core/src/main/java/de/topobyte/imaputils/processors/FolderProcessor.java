@@ -15,46 +15,46 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with imap-utils. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.imaputils;
+package de.topobyte.imaputils.processors;
 
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.sun.mail.imap.IMAPFolder;
 
-public class MessagesLister
+public abstract class FolderProcessor
 {
 
 	private IMAPFolder folder;
 
-	public MessagesLister(IMAPFolder folder)
+	public FolderProcessor(IMAPFolder folder)
 	{
 		this.folder = folder;
 	}
 
-	public void execute() throws MessagingException, IOException
+	public abstract boolean done(Message msg);
+
+	public abstract void process(Message msg) throws MessagingException;
+
+	public void execute() throws MessagingException
 	{
-		examine(folder);
-	}
+		List<Message> messages = Arrays.asList(folder.getMessages());
 
-	private static void examine(IMAPFolder folder)
-			throws MessagingException, IOException
-	{
-		Message[] messages = folder.getMessages();
+		int i = 0;
+		for (Message msg : Lists.reverse(messages)) {
 
-		System.out.println("# Messages : " + folder.getMessageCount());
-		System.out.println(
-				"# Unread Messages : " + folder.getUnreadMessageCount());
-		System.out.println(messages.length);
+			if (done(msg)) {
+				break;
+			}
 
-		for (int i = 0; i < messages.length; i++) {
 			System.out.println(Strings.repeat("*", 72));
-			System.out.println(String.format("MESSAGE %d:", (i + 1)));
-			Message msg = messages[i];
+			System.out.println(String.format("MESSAGE %d:", (i++ + 1)));
 
 			long id = folder.getUID(msg);
 			System.out.println(id);
@@ -63,14 +63,15 @@ public class MessagesLister
 
 			System.out.println("Subject: " + msg.getSubject());
 			System.out.println("From: " + msg.getFrom()[0]);
+			System.out.println("Reply to: " + msg.getReplyTo()[0]);
 			if (recipients != null && recipients.length != 0) {
 				System.out.println("To: " + recipients[0]);
 			}
 			System.out.println("Date: " + msg.getReceivedDate());
 			System.out.println("Size: " + msg.getSize());
 			System.out.println(msg.getFlags());
-			System.out.println("Body: \n" + msg.getContent());
-			System.out.println(msg.getContentType());
+
+			process(msg);
 		}
 	}
 
