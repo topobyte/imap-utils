@@ -6,14 +6,14 @@ if (project.hasProperty("topobyte")) {
 dependencies {
     api 'de.topobyte:adt-tree:0.0.11'
     api 'de.topobyte:adt-tree-printing-stdio:0.0.11'
-    api 'de.topobyte:guava-utils:0.0.1'
-    api 'com.sun.mail:javax.mail:1.6.0'
+    api 'de.topobyte:guava-utils:0.0.2'
+    api 'com.sun.mail:javax.mail:1.6.2'
     api 'com.google.guava:guava:19.0'
-    api 'commons-io:commons-io:2.4'
-    api 'org.slf4j:slf4j-api:1.7.20'
+    api 'commons-io:commons-io:2.18.0'
+    api 'org.slf4j:slf4j-api:2.0.16'
 
-    testRuntimeOnly 'org.slf4j:slf4j-log4j12:1.7.20'
-    testRuntimeOnly 'log4j:log4j:1.2.17'
+    testRuntimeOnly 'org.slf4j:slf4j-reload4j:2.0.16'
+    testRuntimeOnly 'ch.qos.reload4j:reload4j:1.2.26'
 }
 
 def pomInfo = new XmlSlurper().parse(file('info.pom'));
