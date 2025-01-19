@@ -72,7 +72,7 @@ public abstract class FolderProcessor
 			}
 
 			if (printInfo) {
-				printInfo(i, msg);
+				printInfo(i++, msg);
 			}
 
 			process(msg);
