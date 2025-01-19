@@ -20,8 +20,8 @@ file at location `core/src/test/resources/config`.
 
 Example configuration file:
 
-    host=your.host.name.com
-    user=your.user
+    host:your.host.name.com
+    user:your.user
 
 # CLI
 
