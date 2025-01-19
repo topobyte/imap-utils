@@ -90,14 +90,20 @@ public abstract class FolderProcessor
 		Address[] recipients = msg.getAllRecipients();
 
 		logger.info("Subject: " + msg.getSubject());
-		logger.info("From: " + msg.getFrom()[0]);
-		logger.info("Reply to: " + msg.getReplyTo()[0]);
-		if (recipients != null && recipients.length != 0) {
-			logger.info("To: " + recipients[0]);
-		}
+		logger.info("From: " + getFirstSafe(msg.getFrom()));
+		logger.info("Reply to: " + getFirstSafe(msg.getReplyTo()));
+		logger.info("To: " + getFirstSafe(recipients));
 		logger.info("Date: " + msg.getReceivedDate());
 		logger.info("Size: " + msg.getSize());
 		logger.info("Flags: " + msg.getFlags());
+	}
+
+	private <T> T getFirstSafe(T[] array)
+	{
+		if (array == null || array.length == 0) {
+			return null;
+		}
+		return array[0];
 	}
 
 }

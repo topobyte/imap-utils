@@ -61,10 +61,8 @@ public class MessagesLister
 			Address[] recipients = msg.getAllRecipients();
 
 			System.out.println("Subject: " + msg.getSubject());
-			System.out.println("From: " + msg.getFrom()[0]);
-			if (recipients != null && recipients.length != 0) {
-				System.out.println("To: " + recipients[0]);
-			}
+			System.out.println("From: " + getFirstSafe(msg.getFrom()));
+			System.out.println("To: " + getFirstSafe(recipients));
 			System.out.println("Date: " + msg.getReceivedDate());
 			System.out.println("Size: " + msg.getSize());
 			System.out.println("Flags: " + msg.getFlags());
@@ -76,6 +74,14 @@ public class MessagesLister
 						"Unable to get body content(): " + e.getMessage());
 			}
 		}
+	}
+
+	private static <T> T getFirstSafe(T[] array)
+	{
+		if (array == null || array.length == 0) {
+			return null;
+		}
+		return array[0];
 	}
 
 }
