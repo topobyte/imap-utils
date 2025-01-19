@@ -29,7 +29,7 @@ public abstract class StopConditionFolderProcessor extends FolderProcessor
 	public StopConditionFolderProcessor(IMAPFolder folder,
 			MessageStopCondition stopCondition)
 	{
-		super(folder);
+		super(folder, true);
 		this.stopCondition = stopCondition;
 	}
 

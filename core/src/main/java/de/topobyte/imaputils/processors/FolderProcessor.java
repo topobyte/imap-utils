@@ -30,16 +30,19 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.imap.SortTerm;
 
 public abstract class FolderProcessor
 {
 
 	final static Logger logger = LoggerFactory.getLogger(FolderProcessor.class);
 
+	private boolean printInfo;
 	private IMAPFolder folder;
 
-	public FolderProcessor(IMAPFolder folder)
+	public FolderProcessor(IMAPFolder folder, boolean printInfo)
 	{
+		this.printInfo = printInfo;
 		this.folder = folder;
 	}
 
@@ -49,35 +52,52 @@ public abstract class FolderProcessor
 
 	public void execute() throws MessagingException
 	{
-		List<Message> messages = Arrays.asList(folder.getMessages());
+		execute(null);
+	}
+
+	public void execute(SortTerm[] sortTerms) throws MessagingException
+	{
+		List<Message> messages = sortTerms == null
+				? Arrays.asList(folder.getMessages())
+				: Arrays.asList(folder.getSortedMessages(sortTerms));
 
 		int i = 0;
 		for (Message msg : Lists.reverse(messages)) {
-
 			if (done(msg)) {
+				if (printInfo) {
+					System.out.println("Stopping processing. Next message:");
+					printInfo(i++, msg);
+				}
 				break;
 			}
 
-			logger.info(Strings.repeat("*", 72));
-			logger.info(String.format("MESSAGE %d:", (i++ + 1)));
-
-			long id = folder.getUID(msg);
-			logger.info("ID: " + id);
-
-			Address[] recipients = msg.getAllRecipients();
-
-			logger.info("Subject: " + msg.getSubject());
-			logger.info("From: " + msg.getFrom()[0]);
-			logger.info("Reply to: " + msg.getReplyTo()[0]);
-			if (recipients != null && recipients.length != 0) {
-				logger.info("To: " + recipients[0]);
+			if (printInfo) {
+				printInfo(i, msg);
 			}
-			logger.info("Date: " + msg.getReceivedDate());
-			logger.info("Size: " + msg.getSize());
-			logger.info("Flags: " + msg.getFlags());
 
 			process(msg);
 		}
+	}
+
+	private void printInfo(int i, Message msg) throws MessagingException
+	{
+		logger.info(Strings.repeat("*", 72));
+		logger.info(String.format("MESSAGE %d:", (i++ + 1)));
+
+		long id = folder.getUID(msg);
+		logger.info("ID: " + id);
+
+		Address[] recipients = msg.getAllRecipients();
+
+		logger.info("Subject: " + msg.getSubject());
+		logger.info("From: " + msg.getFrom()[0]);
+		logger.info("Reply to: " + msg.getReplyTo()[0]);
+		if (recipients != null && recipients.length != 0) {
+			logger.info("To: " + recipients[0]);
+		}
+		logger.info("Date: " + msg.getReceivedDate());
+		logger.info("Size: " + msg.getSize());
+		logger.info("Flags: " + msg.getFlags());
 	}
 
 }
