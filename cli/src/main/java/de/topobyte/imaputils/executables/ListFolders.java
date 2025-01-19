@@ -17,9 +17,6 @@
 
 package de.topobyte.imaputils.executables;
 
-
-import java.io.IOException;
-
 import javax.mail.MessagingException;
 import javax.mail.Store;
 
@@ -57,7 +54,7 @@ public class ListFolders
 
 		try {
 			run(config);
-		} catch (IOException | MessagingException e) {
+		} catch (MessagingException e) {
 			System.out.println("Connection failed: " + e.getMessage());
 			e.printStackTrace();
 			System.exit(1);
@@ -66,8 +63,7 @@ public class ListFolders
 		System.exit(0);
 	}
 
-	private static void run(Config config)
-			throws MessagingException, IOException
+	private static void run(Config config) throws MessagingException
 	{
 		try (Store store = ConnectionUtil.connect(config)) {
 			FolderLister tool = new FolderLister(store);

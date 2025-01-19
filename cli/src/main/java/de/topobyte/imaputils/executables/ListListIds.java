@@ -17,9 +17,6 @@
 
 package de.topobyte.imaputils.executables;
 
-
-import java.io.IOException;
-
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.Store;
@@ -80,7 +77,7 @@ public class ListListIds
 
 		try {
 			move.run(config, "INBOX");
-		} catch (IOException | MessagingException e) {
+		} catch (MessagingException e) {
 			System.out.println("Connection failed: " + e.getMessage());
 			e.printStackTrace();
 			System.exit(1);
@@ -92,8 +89,7 @@ public class ListListIds
 	private boolean stopAfterMaxDays = false;
 	private int maxDays = 0;
 
-	private void run(Config config, String folderName)
-			throws MessagingException, IOException
+	private void run(Config config, String folderName) throws MessagingException
 	{
 		try (Store store = ConnectionUtil.connect(config)) {
 			try (IMAPFolder folder = (IMAPFolder) store.getFolder(folderName)) {

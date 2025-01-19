@@ -17,8 +17,6 @@
 
 package de.topobyte.imaputils;
 
-import java.io.IOException;
-
 import javax.mail.FetchProfile;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -35,7 +33,7 @@ public class FolderSizeTool
 		this.folder = folder;
 	}
 
-	public void execute() throws IOException, MessagingException
+	public void execute() throws MessagingException
 	{
 		FetchProfile fp = new FetchProfile();
 		fp.add(FetchProfile.Item.ENVELOPE);

@@ -17,15 +17,12 @@
 
 package de.topobyte.imaputils;
 
-import java.io.IOException;
-
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.Store;
 
 import com.sun.mail.imap.IMAPFolder;
 
-import de.topobyte.imaputils.ConnectionUtil;
 import de.topobyte.imaputils.config.Config;
 import de.topobyte.imaputils.config.ConfigUtil;
 import de.topobyte.imaputils.processors.ListIdFinder;
@@ -43,7 +40,7 @@ public class TestListListIdsLastMonth
 
 		try {
 			run(config, "INBOX");
-		} catch (IOException | MessagingException e) {
+		} catch (MessagingException e) {
 			System.out.println("Connection failed: " + e.getMessage());
 			e.printStackTrace();
 			System.exit(1);
@@ -53,7 +50,7 @@ public class TestListListIdsLastMonth
 	}
 
 	private static void run(Config config, String folderName)
-			throws MessagingException, IOException
+			throws MessagingException
 	{
 		try (Store store = ConnectionUtil.connect(config)) {
 			try (IMAPFolder folder = (IMAPFolder) store.getFolder(folderName)) {

@@ -36,13 +36,12 @@ public class MessagesLister
 		this.folder = folder;
 	}
 
-	public void execute() throws MessagingException, IOException
+	public void execute() throws MessagingException
 	{
 		examine(folder);
 	}
 
-	private static void examine(IMAPFolder folder)
-			throws MessagingException, IOException
+	private static void examine(IMAPFolder folder) throws MessagingException
 	{
 		Message[] messages = folder.getMessages();
 

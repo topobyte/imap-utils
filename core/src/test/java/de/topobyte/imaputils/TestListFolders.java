@@ -17,8 +17,6 @@
 
 package de.topobyte.imaputils;
 
-import java.io.IOException;
-
 import javax.mail.MessagingException;
 import javax.mail.Store;
 
@@ -28,7 +26,7 @@ import de.topobyte.imaputils.config.ConfigUtil;
 public class TestListFolders
 {
 
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		Config config = ConfigUtil.obtainConfig();
 		if (config == null) {
@@ -37,7 +35,7 @@ public class TestListFolders
 
 		try {
 			run(config);
-		} catch (IOException | MessagingException e) {
+		} catch (MessagingException e) {
 			System.out.println("Connection failed: " + e.getMessage());
 			System.exit(1);
 		}
@@ -45,8 +43,7 @@ public class TestListFolders
 		System.exit(0);
 	}
 
-	private static void run(Config config)
-			throws MessagingException, IOException
+	private static void run(Config config) throws MessagingException
 	{
 		try (Store store = ConnectionUtil.connect(config.getHost(),
 				config.getUsername(), config.getPassword())) {
