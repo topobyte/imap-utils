@@ -19,6 +19,7 @@ package de.topobyte.imaputils.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class Config
 
 	public static Config read(InputStream input) throws IOException
 	{
-		List<String> lines = IOUtils.readLines(input);
+		List<String> lines = IOUtils.readLines(input, StandardCharsets.UTF_8);
 		input.close();
 
 		Map<String, String> map = new HashMap<>();
