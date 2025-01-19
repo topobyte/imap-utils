@@ -24,12 +24,17 @@ import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.sun.mail.imap.IMAPFolder;
 
 public abstract class FolderProcessor
 {
+
+	final static Logger logger = LoggerFactory.getLogger(FolderProcessor.class);
 
 	private IMAPFolder folder;
 
@@ -53,23 +58,23 @@ public abstract class FolderProcessor
 				break;
 			}
 
-			System.out.println(Strings.repeat("*", 72));
-			System.out.println(String.format("MESSAGE %d:", (i++ + 1)));
+			logger.info(Strings.repeat("*", 72));
+			logger.info(String.format("MESSAGE %d:", (i++ + 1)));
 
 			long id = folder.getUID(msg);
-			System.out.println(id);
+			logger.info("ID: " + id);
 
 			Address[] recipients = msg.getAllRecipients();
 
-			System.out.println("Subject: " + msg.getSubject());
-			System.out.println("From: " + msg.getFrom()[0]);
-			System.out.println("Reply to: " + msg.getReplyTo()[0]);
+			logger.info("Subject: " + msg.getSubject());
+			logger.info("From: " + msg.getFrom()[0]);
+			logger.info("Reply to: " + msg.getReplyTo()[0]);
 			if (recipients != null && recipients.length != 0) {
-				System.out.println("To: " + recipients[0]);
+				logger.info("To: " + recipients[0]);
 			}
-			System.out.println("Date: " + msg.getReceivedDate());
-			System.out.println("Size: " + msg.getSize());
-			System.out.println(msg.getFlags());
+			logger.info("Date: " + msg.getReceivedDate());
+			logger.info("Size: " + msg.getSize());
+			logger.info("Flags: " + msg.getFlags());
 
 			process(msg);
 		}
