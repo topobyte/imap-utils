@@ -20,6 +20,7 @@ package de.topobyte.imaputils.processors;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -39,8 +40,16 @@ public class MaxDaysStopCondition implements MessageStopCondition
 	{
 		try {
 			LocalDateTime now = LocalDateTime.now();
-			LocalDateTime receive = LocalDateTime.ofInstant(
-					msg.getReceivedDate().toInstant(), ZoneId.systemDefault());
+			// Sent date seems to represent the message date more reliably than
+			// received date. When moving messages around among folders using
+			// mail viewers, apparently some set the received date to the date
+			// of the action.
+			Date date = msg.getSentDate();
+			if (date == null) {
+				date = msg.getReceivedDate();
+			}
+			LocalDateTime receive = LocalDateTime.ofInstant(date.toInstant(),
+					ZoneId.systemDefault());
 			Duration duration = Duration.between(now, receive);
 			long days = duration.toDays();
 			return days < -maxDays;

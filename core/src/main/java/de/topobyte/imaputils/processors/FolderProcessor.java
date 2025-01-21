@@ -93,7 +93,8 @@ public abstract class FolderProcessor
 		logger.info("From: " + getFirstSafe(msg.getFrom()));
 		logger.info("Reply to: " + getFirstSafe(msg.getReplyTo()));
 		logger.info("To: " + getFirstSafe(recipients));
-		logger.info("Date: " + msg.getReceivedDate());
+		logger.info("Received Date: " + msg.getReceivedDate());
+		logger.info("Sent Date: " + msg.getSentDate());
 		logger.info("Size: " + msg.getSize());
 		logger.info("Flags: " + msg.getFlags());
 	}
